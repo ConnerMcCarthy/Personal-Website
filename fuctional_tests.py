@@ -31,22 +31,31 @@ class newVisitorTest(unittest.TestCase):
 
         # When they hit enter the page updates, and the page lists "Buy wheat bread" in the to-do list
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(3)
 
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: buy wheat bread' for row in rows),
-            "New to-do item did not appear in table"
-        )
+        self.assertIn('1: Buy wheat bread', [row.text for row in rows])
+        
         
         # On the page there is still an option to enter another item. They enter "buy ice cream".
-        self.fail('Finish the test!')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('buy ice cream')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(3)
 
         # The page updates again, and both items are on the list
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertin('1: Buy wheat bread', [row.text for row in rows])
+        self.assertIn(
+            '2: Use peacock feathers to make a fly',
+            [row.text for row in rows]
+        )
 
         # The user wants to save the list, and the site has generated a unique URL to save
-
+        self.fail('Finish the test!')
+        
         # They visit the URL and the list is the same
 
         # They close the site
